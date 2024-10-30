@@ -1,0 +1,17 @@
+1) set dir for temp header files in Makefile
+This dir can be on tmpfs memory disk.
+This files will update every time when run make.
+
+2) make test/mod_to_h
+
+3) Uncomment the string in Makefile
+include $(OBJECTS_H)
+
+4) Try some example program in test dir.
+make test/string_write
+test/string_write
+
+make test/parse_line
+test/parse_line
+
+Update: https://azhibaev.com/c3.zip

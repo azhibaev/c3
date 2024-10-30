@@ -1,0 +1,5 @@
+VAR_POINTER(unsigned int,h)
+VAR_POINTER(unsigned int,k)
+VAR_POINTER(unsigned int,w)
+VAR_POINTER(unsigned int,a)
+VAR_POINTER(unsigned char,m)

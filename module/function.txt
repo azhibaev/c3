@@ -1,0 +1,10 @@
+FUNCTION_INLINE int FUNC(name)(T *p)
+{
+	int is_set = 0;
+
+	if (p)
+	{
+	}
+
+	return is_set;
+}

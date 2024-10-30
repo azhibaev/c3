@@ -1,0 +1,9 @@
+VAR_POINTER(FILE,f)
+VAR_POINTER_CREATE(chars,s)
+VAR_POINTER_CREATE(chars,file_name)
+VAR(size_t,read_bytes)
+VAR(size_t,write_bytes)
+FLAGS(
+FLAG(read)
+FLAG(write)
+)

@@ -1,0 +1,2 @@
+PARAMETER_POINTER(void,v)
+PARAMETER(int,type)

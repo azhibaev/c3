@@ -1,0 +1,6 @@
+b main
+tty /dev/pts/2
+run
+layout src
+set tui tab-width 2
+

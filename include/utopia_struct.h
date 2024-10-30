@@ -1,0 +1,6 @@
+VAR(int,a)
+VAR(char,c)
+VAR_POINTER_CREATE(chars,s)
+VAR_POINTER_INIT(chars,s1)
+VAR_POINTER_FREE(chars,s2)
+VAR_POINTER(FILE,f)
