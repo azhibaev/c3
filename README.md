@@ -12,15 +12,25 @@ https://github.com/user-attachments/assets/18a59b62-83e0-455c-9bc2-5dd4034914d8
 
 By default, this is the _include_ directory.
 
+### Build mod_to_h program
+
 Compile the _mod_to_h_ program to get the header files in the _include_ folder from the _*.mod.h_ module files:
 ```
 make test/mod_to_h
 ```
+
+### Change Makefile
+
 Uncomment the string in _Makefile_:
 ```Makefile
 include $(OBJECTS_H)
 ```
+
+## Test
+
 Try some example program in _test_ dir:
+
+### Chars module
 
 Test _chars_ string module:
 ```
@@ -41,6 +51,8 @@ Test
 buf=56200916c2d0 size=10240 rpos=0 wpos=4 factor=1.500000 
 ```
 
+### Parse module
+
 Test _parse_ module:
 ```
 make test/parse_line
@@ -53,6 +65,8 @@ s
 "Hello!"
 ```
 
+### Prime module
+
 Test _prime_ generator module:
 ```
 make test/prime1
@@ -62,6 +76,8 @@ Output:
 ```
 p[0]=0 p[1]=2 p[2]=3 p[3]=5 p[4]=7 p[5]=11 p[6]=13 p[7]=17 p[8]=19 p[9]=23 p[10]=29
 ```
+
+### SHA256 module
 
 Test _SHA256_ module:
 ```
