@@ -91,4 +91,22 @@ b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
 
 Example draw graph with OpenGL (old version): [C³ OpenGL](https://github.com/azhibaev/c3_opengl)
 
+## Tutorial
+
+I create simple module for adding two numbers. This module has two functions:
+
+_run_ to process adding of two numbers and _print_ for print result.
+
+There is some hidden functions which created by compiler:
+
+_add_create_ to allocate memory for data structure,
+
+_add_init_ to initialize of fields of the structure,
+
+_add_free_ to free memory (I should call it in main function),
+
+
+https://github.com/user-attachments/assets/9746798d-5e06-4ae2-9c0d-21fc372c8e39
+
+
 Update: https://azhibaev.com/c3.zip
