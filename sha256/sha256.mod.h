@@ -309,7 +309,7 @@ FUNCTION_INLINE int FUNC(print)(T *p)
 	{
 		for (i = 0; i < 8; i++)
 		{
-			printf("%8x", p->h[i]);
+			printf("%08x", p->h[i]);
 		}
 		printf("\n");
 	}
