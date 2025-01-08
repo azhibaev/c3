@@ -4,6 +4,10 @@ A new programming language based on the idea of *simple modules*. This makes it 
 
 ## Build
 
+### Video build tutorial
+
+https://github.com/user-attachments/assets/18a59b62-83e0-455c-9bc2-5dd4034914d8
+
 (Optional) Set dir for temp header files in _Makefile_. This dir can be on _tmpfs_ memory disk. This files will update every time when run _make_.
 
 By default, this is the _include_ directory.
