@@ -97,7 +97,7 @@ I create simple module for adding two numbers. This module has two functions:
 
 _run_ to process adding of two numbers and _print_ for print result.
 
-There is some hidden functions which created by compiler:
+There are some hidden functions which created by compiler:
 
 _add_create_ to allocate memory for data structure,
 
