@@ -17,7 +17,7 @@ By default, this is the _include_ directory.
 Compile the _mod_to_h_ program to get the header files in the _include_ folder from the _*.mod.h_ module files:
 ```
 cd mod_to_h
-make mod_to_h/mod_to_h
+make mod_to_h
 cd ..
 ```
 
