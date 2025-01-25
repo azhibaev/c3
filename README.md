@@ -16,14 +16,9 @@ By default, this is the _include_ directory.
 
 Compile the _mod_to_h_ program to get the header files in the _include_ folder from the _*.mod.h_ module files:
 ```
-make test/mod_to_h
-```
-
-### Change Makefile
-
-Uncomment the string in _Makefile_:
-```Makefile
-include $(OBJECTS_H)
+cd mod_to_h
+make mod_to_h/mod_to_h
+cd ..
 ```
 
 ## Test
