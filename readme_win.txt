@@ -5,5 +5,5 @@ Create headers in include directory :
 
 Make mod_to_h.exe :
 
-	dmc -Iinclude -Icommon -Imodule -Ichars -Iparse -Iutopia test\mod_to_h.c
+	dmc -Iinclude -Icommon -Imodule -Ichars -Iparse -Iutopia mod_to_h\mod_to_h.c
 

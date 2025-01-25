@@ -2,12 +2,11 @@
 This dir can be on tmpfs memory disk.
 This files will update every time when run make.
 
-2) make test/mod_to_h
+2) cd mod_to_h
+make mod_to_h
+cd ..
 
-3) Uncomment the string in Makefile
-include $(OBJECTS_H)
-
-4) Try some example program in test dir.
+3) Try some example program in test dir.
 make test/string_write
 test/string_write
 
