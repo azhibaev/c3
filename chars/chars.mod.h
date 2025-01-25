@@ -26,13 +26,17 @@
 #module chars
 
 #struct
-char *buf;
-size_t size;
-size_t rpos;
-size_t wpos;
-float factor;
-init;
-alloc;
+char *buf;		/* buffer */
+size_t size;	/* size of buffer */
+size_t rpos;	/* read position */
+size_t wpos;	/* next write position */
+size_t gpos;	/* read get position */
+size_t fpos;	/* found position */
+float factor;	/* resize factor */
+init;			/* is init */
+alloc;			/* buffer is allocated */
+prefix;			/* found char in beginning */
+suffix;			/* found char in ending */
 
 #init (size_t size)
 if (!size)
@@ -60,7 +64,7 @@ if (p->buf)
 	p->buf = NULL;
 }
 
-#include "module.h"
+#include "mod.h"
 
 /* Flags */
 
@@ -79,6 +83,9 @@ if (p->buf)
 #define CHARS_FLAG_ALLOC				(1 << 6)
 #define CHARS_FLAG_GROWTH_FACTOR		(1 << 8)
 
+/* Flags for find */
+#define CHARS_FLAG_FIND_LAST		(1 << 12)
+
 enum T_NAME(info_type)
 {
 	T_PREFIX_NAME(info_type,int),
@@ -94,7 +101,7 @@ enum T_NAME(info_type)
 #include STR(T_NAME(mark.h))		/* chars_mark.h */
 #include STR(T_NAME(find.h))		/* chars_find.h */
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* CHARS_H */
 

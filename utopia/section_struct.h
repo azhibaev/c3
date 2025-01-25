@@ -51,7 +51,7 @@ FUNCTION_INLINE int FUNC(section_struct)(T *p)
 									"create",
 									p->s_in->rpos - pos))
 						{
-							if (parse_get_char(p->s_in) == ';' ||
+							if (parse_char_read(p->s_in) == ';' ||
 									p->s_in->rpos + 1 >= p->f_in->s->wpos)
 							{
 								is_var_type = 1;
@@ -73,7 +73,7 @@ FUNCTION_INLINE int FUNC(section_struct)(T *p)
 									"init",
 									p->s_in->rpos - pos))
 						{
-							if (parse_get_char(p->s_in) == ';' ||
+							if (parse_char_read(p->s_in) == ';' ||
 									p->s_in->rpos + 1 >= p->f_in->s->wpos)
 							{
 								is_var_type = 1;
@@ -95,7 +95,7 @@ FUNCTION_INLINE int FUNC(section_struct)(T *p)
 									"free",
 									p->s_in->rpos - pos))
 						{
-							if (parse_get_char(p->s_in) == ';' ||
+							if (parse_char_read(p->s_in) == ';' ||
 									p->s_in->rpos + 1 >= p->f_in->s->wpos)
 							{
 								is_var_type = 1;

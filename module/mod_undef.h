@@ -25,7 +25,10 @@
 #undef T
 #undef MODULE_DEBUG
 
+#ifndef MODULE_NAME_SUFFIX
 #undef MODULE_NAME
+#endif	/* MODULE_NAME_SUFFIX */
+#undef MODULE_NAME_SUFFIX
 #undef MODULE_STRUCT
 #undef MODULE_FUNC_DEF
 #undef MODULE_CREATE
@@ -34,3 +37,8 @@
 #undef MODULE_INIT_VAR
 #undef MODULE_FREE
 #undef MODULE_FREE_VAR
+/* Timely until automatic function name recognition */
+#undef FUNC_PARENT
+#undef T_NAME_PARENT
+#undef T_PREFIX_NAME_PARENT
+#undef T_PARENT

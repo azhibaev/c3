@@ -10,14 +10,14 @@
  * License: CPOL http://www.codeproject.com/info/cpol10.aspx
  */
 
-#include "module_def.h"
+#include "mod_def.h"
 
 #ifdef MODULE_STRUCT
-#include "module_struct.h"
-#include "module_create.h"
-#include "module_init.h"
-#include "module_create_init.h"
-#include "module_init_default.h"
-#include "module_free.h"
+#include "mod_struct.h"
+#include "mod_create.h"
+#include "mod_init.h"
+#include "mod_create_init.h"
+#include "mod_init_default.h"
+#include "mod_free.h"
 #endif	/* MODULE_STRUCT */
 

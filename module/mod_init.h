@@ -50,7 +50,7 @@ FUNCTION_INLINE int FUNC(init)(T *p
 	{
 		#ifdef MODULE_STRUCT
 		#define MODULE_STRUCT_H STR(T_NAME(struct.h))
-		#include "module_init_def.h"
+		#include "mod_init_def.h"
 		#undef MODULE_STRUCT_H
 		#endif	/* MODULE_STRUCT */
 		#ifndef MODULE_INIT_H
@@ -65,7 +65,7 @@ FUNCTION_INLINE int FUNC(init)(T *p
 	if (p) {
 		#ifdef MODULE_STRUCT
 		#define MODULE_STRUCT_H STR(T_NAME(struct.h))
-		#include "module_init_def.h"
+		#include "mod_init_def.h"
 		#undef MODULE_STRUCT_H
 		#endif	/* MODULE_STRUCT */
 #endif	/* MODULE_INIT */

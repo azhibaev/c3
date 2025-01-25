@@ -27,7 +27,11 @@
 
 typedef struct list list;
 
+#ifndef MODULE_NAME
 #define MODULE_NAME item
+#else
+#define MODULE_NAME_SUFFIX item
+#endif
 
 #define MODULE_STRUCT item_struct.h
 #define MODULE_INIT item_init.h

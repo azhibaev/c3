@@ -29,13 +29,17 @@
 #define CHARS_DEFAULT_BUFFER_SIZE		1 KB
 #define CHARS_DEFAULT_GROWTH_FACTOR		1.5
 
+#ifndef MODULE_NAME
 #define MODULE_NAME chars
+#else
+#define MODULE_NAME_SUFFIX chars
+#endif
 
 #define MODULE_STRUCT chars_struct.h
 #define MODULE_INIT chars_init.h
 #define MODULE_INIT_VAR chars_init_var.h
 #define MODULE_FREE chars_free.h
-#include "module.h"
+#include "mod.h"
 
 /* Flags */
 
@@ -54,6 +58,9 @@
 #define CHARS_FLAG_ALLOC				(1 << 6)
 #define CHARS_FLAG_GROWTH_FACTOR		(1 << 8)
 
+/* Flags for find */
+#define CHARS_FLAG_FIND_LAST		(1 << 12)
+
 enum T_NAME(info_type)
 {
 	T_PREFIX_NAME(info_type,int),
@@ -69,7 +76,7 @@ enum T_NAME(info_type)
 #include STR(T_NAME(mark.h))		/* chars_mark.h */
 #include STR(T_NAME(find.h))		/* chars_find.h */
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* CHARS_H */
 

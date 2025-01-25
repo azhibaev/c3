@@ -24,16 +24,16 @@ FUNCTION_INLINE int FUNC(identifier)(T *p,
 		if (chars_check_read(s))
 		{
 			pos = chars_get_mark(s);
-			c = chars_get_char(s);
+			c = chars_char_read(s);
 			if (PARSE_C3_ALPHA || PARSE_C3_UNDERLINE)
 			{
 				if (PARSE_C3_ALPHA)
 				{
 					is_set++;
 				}
-				while (chars_next_char(s))
+				while (chars_read_next(s))
 				{
-					c = chars_get_char(s);
+					c = chars_char_read(s);
 					if (PARSE_C3_ALPHA || PARSE_C3_DIGIT || PARSE_C3_UNDERLINE)
 					{
 						is_set++;

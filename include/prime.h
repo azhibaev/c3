@@ -25,13 +25,17 @@
 
 #include "common_def.h"
 
+#ifndef MODULE_NAME
 #define MODULE_NAME prime
+#else
+#define MODULE_NAME_SUFFIX prime
+#endif
 
 #define MODULE_STRUCT prime_struct.h
 #define MODULE_INIT prime_init.h
 #define MODULE_INIT_VAR prime_init_var.h
 #define MODULE_FREE prime_free.h
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE unsigned int FUNC(calculate_i)(T *p,
 		unsigned int prime_i);
@@ -203,7 +207,7 @@ Cross out multiples
 	return l;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* PRIME_H */
 

@@ -45,3 +45,39 @@ FUNCTION_INLINE int FUNC(set_mark)(T *p,
 	return is_set;
 }
 
+/*
+Returns the tmp reading position
+*/
+FUNCTION_INLINE size_t FUNC(get_mark_gpos)(T *p)
+{
+	int is_set = 0;
+
+	if (p)
+	{
+		return p->gpos;
+	}
+
+	return is_set;
+}
+
+/*
+Sets the tmp reading position
+*/
+FUNCTION_INLINE int FUNC(set_mark_gpos)(T *p,
+		size_t read_mark)
+{
+	int is_set = 0;
+
+	if (FUNC(check)(p))
+	{
+		if (read_mark < p->wpos &&
+				p->rpos <= read_mark)
+		{
+			p->gpos = read_mark;
+			is_set = 1;
+		}
+	}
+
+	return is_set;
+}
+

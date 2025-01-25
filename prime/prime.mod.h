@@ -58,7 +58,7 @@ if (p->pa)
 	p->pa = NULL;
 }
 
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE unsigned int FUNC(calculate_i)(T *p,
 		unsigned int prime_i);
@@ -230,7 +230,7 @@ Cross out multiples
 	return l;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* PRIME_H */
 

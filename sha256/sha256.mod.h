@@ -136,7 +136,7 @@ if (p->m)
 	p->m = NULL;
 }
 
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE unsigned int FUNC(rightrotate)(unsigned int i,
 		unsigned int n);
@@ -317,7 +317,7 @@ FUNCTION_INLINE int FUNC(print)(T *p)
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* SHA123_H */
 

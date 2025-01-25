@@ -252,6 +252,7 @@ FUNCTION_INLINE int FUNC(reset)(T *p)
 	if (p)
 	{
 		p->rpos = 0;
+		p->gpos = 0;
 		p->wpos = 0;
 		is_set = 1;
 	}
@@ -451,6 +452,27 @@ FUNCTION_INLINE int FUNC(compact)(T *p)
 					p->rpos = 0;
 					is_set++;
 				}
+			}
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(flush)(T *p)
+{
+	int is_set = 0;
+
+	if (p)
+	{
+		if (FUNC(check_read)(p))
+		{
+			if (p->rpos < p->wpos &&
+					p->rpos < p->gpos &&
+					p->gpos < p->wpos)
+			{
+				p->rpos = p->gpos;
+				is_set++;
 			}
 		}
 	}

@@ -55,6 +55,11 @@
 #define T_NAME(name) T_MODULE_NAME_SUFFIX(MODULE_NAME,MODULE_NAME_SUFFIX,name)
 #define T_PREFIX_NAME(prefix,name) T_MODULE_NAME_PREFIX_SUFFIX(prefix,MODULE_NAME,MODULE_NAME_SUFFIX,name)
 #define T T_MODULE_NAME(MODULE_NAME,MODULE_NAME_SUFFIX)
+/* Timely until automatic function name recognition */
+#define FUNC_PARENT(name) T_MODULE_NAME(MODULE_NAME,name)
+#define T_NAME_PARENT(name) T_MODULE_NAME(MODULE_NAME,name)
+#define T_PREFIX_NAME_PARENT(prefix,name) T_MODULE_NAME_PREFIX(prefix,MODULE_NAME,name)
+#define T_PARENT MODULE_NAME
 
 #else	/* MODULE_NAME_SUFFIX */
 

@@ -1,0 +1,8 @@
+VAR_POINTER_CREATE(chars,s)
+VAR_POINTER_CREATE(file,f)
+VAR(int,date)
+VAR_POINTER_CREATE(list2,debit)
+VAR(float,total_day)
+VAR(float,total_month)
+VAR(float,avg_date)
+VAR(float,avg_month)

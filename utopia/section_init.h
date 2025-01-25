@@ -248,10 +248,12 @@ FUNCTION_INLINE int FUNC(section_init)(T *p)
 					if (!is_var)	
 					{
 						p->s_in->rpos = 0;
+						/*
 						if (p->s_in->buf[p->f_in->s->wpos] == '\n')
 						{
 							p->s_in->wpos++;
 						}
+						*/
 						chars_copy(p->s_init,
 								p->s_in,
 								0,

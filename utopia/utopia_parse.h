@@ -32,8 +32,9 @@
 #define MODULE_INIT_VAR utopia_parse_init_var.h
 #define MODULE_FUNC_DEF utopia_parse_func_def.h
 #define UTOPIA_PARSE_SECTION_LIST "utopia_parse_section_list.h"
+#define UTOPIA_MOD_SUFFIX ".mod.h"
 
-#include "module.h"
+#include "mod.h"
 
 enum utopia_parse_section_name_e
 {
@@ -153,10 +154,27 @@ FUNCTION_INLINE int FUNC(write_out)(T *p)
 						"/",
 						0,
 						0);
-				chars_copy(p->s,
-						p->s_module,
-						0,
-						0);
+/*
+TODO: Add mod file name here
+Sat Aug 10 12:57:21 UTC 2024
+basename
+Sun Aug 25 11:12:08 UTC 2024
+DONE: basename is added
+*/
+				if (chars_check(p->s_basename))
+				{
+					chars_copy(p->s,
+							p->s_basename,
+							0,
+							0);
+				}
+				else if (chars_check(p->s_module))
+				{
+					chars_copy(p->s,
+							p->s_module,
+							0,
+							0);
+				}
 				chars_read_pchar(p->s,
 						".h",
 						0,
@@ -284,7 +302,21 @@ FUNCTION_INLINE int FUNC(open_file)(T *p,
 					"/",
 					0,
 					0);
-			if (chars_check(p->s_module))
+/* Add basename
+Sat Aug 31 10:09:03 UTC 2024
+*/
+			if (chars_check(p->s_basename))
+			{
+				chars_copy(p->s,
+						p->s_basename,
+						0,
+						0);
+				chars_read_pchar(p->s,
+						"_",
+						0,
+						0);
+			}
+			else if (chars_check(p->s_module))
 			{
 				chars_copy(p->s,
 						p->s_module,
@@ -311,7 +343,7 @@ FUNCTION_INLINE int FUNC(open_file)(T *p,
 
 #undef UTOPIA_PARSE_SECTION_LIST
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* UTOPIA_PARSE */
 

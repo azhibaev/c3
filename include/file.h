@@ -26,7 +26,11 @@
 #include "common_def.h"
 #include "chars.h"
 
+#ifndef MODULE_NAME
 #define MODULE_NAME file
+#else
+#define MODULE_NAME_SUFFIX file
+#endif
 
 #define MODULE_STRUCT file_struct.h
 #define FILE_FLAG_READ (1 << 1)
@@ -37,7 +41,7 @@
 #define MODULE_INIT file_init.h
 #define MODULE_INIT_VAR file_init_var.h
 #define MODULE_FREE file_free.h
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE int FUNC(read)(T *p)
 {
@@ -203,6 +207,6 @@ FUNCTION_INLINE int FUNC(read_chars)(T *p,
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* FILE_H */

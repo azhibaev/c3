@@ -43,7 +43,8 @@ FUNCTION_INLINE int FUNC(section_module)(T *p)
 						p->is_module = 1;
 						chars_reset(p->s_in);
 						chars_read_pchar(p->s_in,
-								"#define MODULE_NAME ",
+								"#ifndef MODULE_NAME\n\
+#define MODULE_NAME ",
 								0,
 								0);
 						chars_copy(p->s_in,
@@ -51,7 +52,17 @@ FUNCTION_INLINE int FUNC(section_module)(T *p)
 								0,
 								0);
 						chars_read_pchar(p->s_in,
-								"\n",
+								"\n\
+#else\n\
+#define MODULE_NAME_SUFFIX ",
+								0,
+								0);
+						chars_copy(p->s_in,
+								p->s_module,
+								0,
+								0);
+						chars_read_pchar(p->s_in,
+								"\n#endif\n",
 								0,
 								0);
 						is_set = FUNC(write_out)(p);

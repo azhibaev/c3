@@ -25,44 +25,44 @@ FUNCTION_INLINE int FUNC(string_constant)(T *p,
 		if (chars_check_read(s))
 		{
 			pos = chars_get_mark(s);
-			c = chars_get_char(s);
+			c = chars_char_read(s);
 			if (PARSE_C3_ALPHA_L)
 			{
 				is_set++;
-				c = chars_get_next_char(s);
+				c = chars_char_read_next(s);
 			}
 			if (PARSE_C3_ALPHA_DOUBLE_QUOTE)
 			{
 				is_set++;
-				c = chars_get_next_char(s);
+				c = chars_char_read_next(s);
 				while (c)
 				{
 					if (PARSE_C3_ALPHA_DOUBLE_QUOTE)
 					{
 						is_set++;
-						c = chars_get_next_char(s);
+						c = chars_char_read_next(s);
 						break;
 					}
 					else if (PARSE_C3_ALPHA_BACKSLASH)
 					{
 						is_set++;
-						c = chars_get_next_char(s);
+						c = chars_char_read_next(s);
 						/* escape */
 						if (PARSE_C3_ALPHA_ESCAPE)
 						{
 							is_set++;
-							c = chars_get_next_char(s);
+							c = chars_char_read_next(s);
 						}
 						else if (PARSE_C3_DIGIT_OCTAL)
 						{
 							is_set++;
-							c = chars_get_next_char(s);
+							c = chars_char_read_next(s);
 							for (i = 1; i < 3; i++)
 							{
 								if (PARSE_C3_DIGIT_OCTAL)
 								{
 									is_set++;
-									c = chars_get_next_char(s);
+									c = chars_char_read_next(s);
 								}
 								else
 								{
@@ -73,11 +73,11 @@ FUNCTION_INLINE int FUNC(string_constant)(T *p,
 						else if (PARSE_C3_ALPHA_X)
 						{
 							is_set++;
-							c = chars_get_next_char(s);
+							c = chars_char_read_next(s);
 							while (PARSE_C3_DIGIT || PARSE_C3_ALPHA_HEX)
 							{
 								is_set++;
-								c = chars_get_next_char(s);
+								c = chars_char_read_next(s);
 							}
 						}
 						else
@@ -94,7 +94,7 @@ FUNCTION_INLINE int FUNC(string_constant)(T *p,
 					else
 					{
 						is_set++;
-						c = chars_get_next_char(s);
+						c = chars_char_read_next(s);
 					}
 				}
 			}

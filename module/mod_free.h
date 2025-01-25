@@ -55,7 +55,7 @@ FUNCTION_INLINE int FUNC(free)(T *p
 #endif	/* MODULE_FREE */
 		#ifdef MODULE_STRUCT
 		#define MODULE_STRUCT_H STR(T_NAME(struct.h))
-		#include "module_free_def.h"
+		#include "mod_free_def.h"
 		#undef MODULE_STRUCT_H
 		#endif	/* MODULE_STRUCT */
 		free(p);

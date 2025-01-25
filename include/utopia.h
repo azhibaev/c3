@@ -29,7 +29,11 @@
 #include "file.h"
 
 
+#ifndef MODULE_NAME
 #define MODULE_NAME utopia
+#else
+#define MODULE_NAME_SUFFIX utopia
+#endif
 
 #define MODULE_STRUCT utopia_struct.h
 #define MODULE_INIT utopia_init.h

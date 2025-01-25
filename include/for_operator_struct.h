@@ -1,0 +1,10 @@
+VAR(int,i)
+VAR(int,start)
+VAR(int,end)
+VAR(int,step)
+VAR_POINTER(T,p)
+FLAGS(
+FLAG(up)
+FLAG(down)
+FLAG(start)
+)

@@ -27,12 +27,16 @@
 
 #include "chars.h"
 
+#ifndef MODULE_NAME
 #define MODULE_NAME sha256
+#else
+#define MODULE_NAME_SUFFIX sha256
+#endif
 
 #define MODULE_STRUCT sha256_struct.h
 #define MODULE_INIT sha256_init.h
 #define MODULE_FREE sha256_free.h
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE unsigned int FUNC(rightrotate)(unsigned int i,
 		unsigned int n);
@@ -205,7 +209,7 @@ FUNCTION_INLINE int FUNC(print)(T *p)
 	{
 		for (i = 0; i < 8; i++)
 		{
-			printf("%8x", p->h[i]);
+			printf("%08x", p->h[i]);
 		}
 		printf("\n");
 	}
@@ -213,7 +217,7 @@ FUNCTION_INLINE int FUNC(print)(T *p)
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* SHA123_H */
 

@@ -10,7 +10,7 @@
  * License: CPOL http://www.codeproject.com/info/cpol10.aspx
  */
 
-FUNCTION_INLINE unsigned char FUNC(get_char)(T *s)
+FUNCTION_INLINE unsigned char FUNC(char_read)(T *s)
 {
 	unsigned char c = 0;
 
@@ -22,7 +22,7 @@ FUNCTION_INLINE unsigned char FUNC(get_char)(T *s)
 	return c;
 }
 
-FUNCTION_INLINE unsigned char FUNC(get_next_char)(T *s)
+FUNCTION_INLINE unsigned char FUNC(char_read_next)(T *s)
 {
 	unsigned char c = 0;
 
@@ -38,7 +38,7 @@ FUNCTION_INLINE unsigned char FUNC(get_next_char)(T *s)
 	return c;
 }
 
-FUNCTION_INLINE unsigned char FUNC(next_char)(T *s)
+FUNCTION_INLINE unsigned char FUNC(read_next)(T *s)
 {
 	int is_set = 0;
 
@@ -49,6 +49,157 @@ FUNCTION_INLINE unsigned char FUNC(next_char)(T *s)
 			s->rpos++;
 			is_set = 1;
 		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE unsigned char FUNC(char_get)(T *s)
+{
+	unsigned char c = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		if (s->rpos > s->gpos)
+		{
+			s->gpos = s->rpos;
+		}
+		if (s->rpos < s->wpos &&
+				s->rpos <= s->gpos &&
+				s->gpos < s->wpos)
+		{
+			c = s->buf[s->gpos];
+		}
+	}
+
+	return c;
+}
+
+FUNCTION_INLINE unsigned char FUNC(char_get_next)(T *s)
+{
+	unsigned char c = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		if (s->rpos < s->wpos)
+		{
+			if (s->rpos <= s->gpos &&
+					s->gpos < s->wpos)
+			{
+				s->gpos++;
+				c = s->buf[s->gpos];
+			}
+		}
+	}
+
+	return c;
+}
+
+FUNCTION_INLINE int FUNC(get_next)(T *s)
+{
+	int is_set = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		if (s->rpos < s->wpos)
+		{
+			if (s->rpos <= s->gpos &&
+					s->gpos < s->wpos)
+			{
+				s->gpos++;
+				is_set = 1;
+			}
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE unsigned char FUNC(char_get_first)(T *s)
+{
+	unsigned char c = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		s->gpos = s->rpos;
+		c = s->buf[s->gpos];
+	}
+
+	return c;
+}
+
+/* To set rpos equal of gpos call flush function
+*/
+FUNCTION_INLINE unsigned char FUNC(char_get_last)(T *s)
+{
+	unsigned char c = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		s->gpos = s->wpos - 1;
+		c = s->buf[s->gpos];
+	}
+
+	return c;
+}
+
+FUNCTION_INLINE unsigned char FUNC(char_get_prev)(T *s)
+{
+	unsigned char c = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		if (s->rpos < s->wpos &&
+				s->rpos < s->gpos &&
+				s->gpos < s->wpos)
+		{
+			s->gpos--;
+			c = s->buf[s->gpos];
+		}
+	}
+
+	return c;
+}
+
+FUNCTION_INLINE int FUNC(get_prev)(T *s)
+{
+	int is_set = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		if (s->rpos < s->wpos &&
+				s->rpos < s->gpos &&
+				s->gpos < s->wpos)
+		{
+			s->gpos--;
+			is_set = 1;
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(set_get_pos)(T *s)
+{
+	int is_set = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		s->gpos = s->rpos;
+		is_set++;
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(reset_get_pos)(T *s)
+{
+	int is_set = 0;
+
+	if (FUNC(check_read)(s))
+	{
+		s->gpos = 0;
+		is_set++;
 	}
 
 	return is_set;

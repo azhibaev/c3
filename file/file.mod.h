@@ -70,7 +70,7 @@ if (p->f)
 	p->f = 0;
 }
 
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE int FUNC(read)(T *p)
 {
@@ -236,6 +236,6 @@ FUNCTION_INLINE int FUNC(read_chars)(T *p,
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* FILE_H */

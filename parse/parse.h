@@ -31,7 +31,7 @@
 //#define MODULE_INIT_VAR parse_init_var.h
 //#define MODULE_FREE parse_free.h
 
-#include "module.h"
+#include "mod.h"
 
 #define OCTET (c >= 0 && c <= 255)
 #define CHAR (c >= 0 && c <= 127)
@@ -138,7 +138,7 @@ FUNCTION_INLINE int FUNC(character_constant)(chars *s);
 FUNCTION_INLINE int FUNC(floating_constant)(chars *s);
 FUNCTION_INLINE int FUNC(string_constant)(chars *s);
 
-FUNCTION_INLINE unsigned char FUNC(get_char)(chars *s)
+FUNCTION_INLINE unsigned char FUNC(char_read)(chars *s)
 {
 	unsigned char c = 0;
 
@@ -150,7 +150,7 @@ FUNCTION_INLINE unsigned char FUNC(get_char)(chars *s)
 	return c;
 }
 
-FUNCTION_INLINE unsigned char FUNC(get_next_char)(chars *s)
+FUNCTION_INLINE unsigned char FUNC(char_read_next)(chars *s)
 {
 	unsigned char c = 0;
 
@@ -166,7 +166,7 @@ FUNCTION_INLINE unsigned char FUNC(get_next_char)(chars *s)
 	return c;
 }
 
-FUNCTION_INLINE unsigned char FUNC(next_char)(chars *s)
+FUNCTION_INLINE unsigned char FUNC(read_next)(chars *s)
 {
 	int is_set = 0;
 
@@ -187,13 +187,13 @@ FUNCTION_INLINE int FUNC(crlf)(chars *s)
 	int is_set = 0;
 	unsigned char c = 0;
 
-	c = FUNC(get_char)(s);
+	c = FUNC(char_read)(s);
 	if (CR)
 	{
-		c = FUNC(get_next_char)(s);
+		c = FUNC(char_read_next)(s);
 		if (LF)
 		{
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 			is_set = 1;
 		}
 	}
@@ -206,19 +206,19 @@ FUNCTION_INLINE int FUNC(crlf_any)(chars *s)
 	int is_set = 0;
 	unsigned char c = 0;
 
-	c = FUNC(get_char)(s);
+	c = FUNC(char_read)(s);
 	if (CR)
 	{
-		c = FUNC(get_next_char)(s);
+		c = FUNC(char_read_next)(s);
 		if (LF)
 		{
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 			is_set = 1;
 		}
 	}
 	else if (LF)
 	{
-		c = FUNC(get_next_char)(s);
+		c = FUNC(char_read_next)(s);
 		is_set = 1;
 	}
 
@@ -234,11 +234,11 @@ FUNCTION_INLINE int FUNC(lws)(chars *s)
 	{
 	}
 
-	c = FUNC(get_char)(s);
+	c = FUNC(char_read)(s);
 	while (SP || HT)
 	{
 		is_set++;
-		c = FUNC(get_next_char)(s);
+		c = FUNC(char_read_next)(s);
 	}
 
 	return is_set;
@@ -250,10 +250,10 @@ FUNCTION_INLINE int FUNC(ch)(chars *s,
 	int is_set = 0;
 	unsigned char c = 0;
 
-	c = FUNC(get_char)(s);
+	c = FUNC(char_read)(s);
 	if (c == ch)
 	{
-		FUNC(next_char)(s);
+		FUNC(read_next)(s);
 		is_set = 1;
 	}
 
@@ -279,16 +279,16 @@ FUNCTION_INLINE int FUNC(comment)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		if (c == '/')
 		{
-			if (FUNC(next_char)(s))
+			if (FUNC(read_next)(s))
 			{
-				c = FUNC(get_char)(s);
+				c = FUNC(char_read)(s);
 				if (c == '/')
 				{
 					is_set = 1;
-					if (FUNC(next_char)(s))
+					if (FUNC(read_next)(s))
 					{
 					}
 				}
@@ -306,7 +306,7 @@ FUNCTION_INLINE int FUNC(token)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		while (CHAR)
 		{
 			if (CTL || SEPARATORS)
@@ -314,9 +314,9 @@ FUNCTION_INLINE int FUNC(token)(chars *s)
 				break;
 			}
 			is_set++;
-			if (FUNC(next_char)(s))
+			if (FUNC(read_next)(s))
 			{
-				c = FUNC(get_char)(s);
+				c = FUNC(char_read)(s);
 			}
 			else
 			{
@@ -335,16 +335,16 @@ FUNCTION_INLINE int FUNC(identifier)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		if (ALPHA || UNDERLINE)
 		{
 			if (ALPHA)
 			{
 				is_set++;
 			}
-			while (FUNC(next_char)(s))
+			while (FUNC(read_next)(s))
 			{
-				c = FUNC(get_char)(s);
+				c = FUNC(char_read)(s);
 				if (ALPHA || DIGIT || UNDERLINE)
 				{
 					is_set++;
@@ -367,7 +367,7 @@ FUNCTION_INLINE int FUNC(operator)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		while (c)
 		{
 			if (OPERATOR)
@@ -378,7 +378,7 @@ FUNCTION_INLINE int FUNC(operator)(chars *s)
 			{
 				break;
 			}
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 		}
 	}
 
@@ -392,26 +392,26 @@ FUNCTION_INLINE int FUNC(literal)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		if (c == '"')
 		{
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 			while (c)
 			{
 				if (c == '\\')
 				{
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					if (c == '"')
 					{
 					}
 				}
 				else if (c == '"')
 				{
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					break;
 				}
 				is_set++;
-				c = FUNC(get_next_char)(s);
+				c = FUNC(char_read_next)(s);
 			}
 		}
 	}
@@ -430,13 +430,13 @@ FUNCTION_INLINE int FUNC(char)(chars *s,
 	{
 		if (s_c)
 		{
-			c = FUNC(get_char)(s);
+			c = FUNC(char_read)(s);
 			for (p_s = s_c; *p_s; p_s++)
 			{
 				if (*p_s == c)
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					if (!c)
 					{
 						is_set = 0;
@@ -498,23 +498,23 @@ FUNCTION_INLINE int FUNC(integer_constant)(chars *s)
 	if (chars_check(s))
 	{
 		pos = chars_get_mark(s);
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		if (DIGIT)
 		{
 			is_set++;
-			if (FUNC(next_char)(s))
+			if (FUNC(read_next)(s))
 			{
 				if (DIGIT_0)
 				{
-					c = FUNC(get_char)(s);
+					c = FUNC(char_read)(s);
 					if (ALPHA_X)
 					{
 						/* hex */
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 						while (DIGIT || ALPHA_HEX)
 						{
 							is_set++;
-							c = FUNC(get_next_char)(s);
+							c = FUNC(char_read_next)(s);
 						}
 					}
 					else
@@ -523,25 +523,25 @@ FUNCTION_INLINE int FUNC(integer_constant)(chars *s)
 						while (DIGIT_OCTAL)
 						{
 							is_set++;
-							c = FUNC(get_next_char)(s);
+							c = FUNC(char_read_next)(s);
 						}
 					}
 				}
 				else
 				{
 					/* dec */
-					c = FUNC(get_char)(s);
+					c = FUNC(char_read)(s);
 					while (DIGIT)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 					}
 				}
 				/* suffix */
 				if (ALPHA_L || ALPHA_U)
 				{
 					is_set++;
-					if (FUNC(next_char)(s))
+					if (FUNC(read_next)(s))
 					{
 					}
 				}
@@ -591,44 +591,44 @@ FUNCTION_INLINE int FUNC(character_constant)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		if (ALPHA_L)
 		{
 			is_set++;
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 		}
 		if (ALPHA_SINGLE_QUOTE)
 		{
 			is_set++;
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 			while (c)
 			{
 				if (ALPHA_SINGLE_QUOTE)
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					break;
 				}
 				else if (ALPHA_BACKSLASH)
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					/* escape */
 					if (ALPHA_ESCAPE)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 					}
 					else if (DIGIT_OCTAL)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 						for (i = 1; i < 3; i++)
 						{
 							if (DIGIT_OCTAL)
 							{
 								is_set++;
-								c = FUNC(get_next_char)(s);
+								c = FUNC(char_read_next)(s);
 							}
 							else
 							{
@@ -639,11 +639,11 @@ FUNCTION_INLINE int FUNC(character_constant)(chars *s)
 					else if (ALPHA_X)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 						while (DIGIT || ALPHA_HEX)
 						{
 							is_set++;
-							c = FUNC(get_next_char)(s);
+							c = FUNC(char_read_next)(s);
 						}
 					}
 					else
@@ -660,7 +660,7 @@ FUNCTION_INLINE int FUNC(character_constant)(chars *s)
 				else
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 				}
 			}
 		}
@@ -724,36 +724,36 @@ FUNCTION_INLINE int FUNC(floating_constant)(chars *s)
 	if (chars_check(s))
 	{
 		pos = chars_get_mark(s);
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		while (DIGIT)
 		{
 			is_integer_part++;
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 		}
 		if (c == '.')
 		{
 			is_decimal_point++;
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 			while (DIGIT)
 			{
 				is_fraction_part++;
-				c = FUNC(get_next_char)(s);
+				c = FUNC(char_read_next)(s);
 			}
 		}
 		if (is_integer_part || is_fraction_part)
 		{
 			if (ALPHA_E)
 			{
-				c = FUNC(get_next_char)(s);
+				c = FUNC(char_read_next)(s);
 				if (c == '+' || c == '-')
 				{
 					is_sign++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 				}
 				while (DIGIT)
 				{
 					is_exponent++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 				}
 				if (is_exponent)
 				{
@@ -766,7 +766,7 @@ FUNCTION_INLINE int FUNC(floating_constant)(chars *s)
 				if (ALPHA_F || ALPHA_L)
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 				}
 			}
 		}
@@ -787,44 +787,44 @@ FUNCTION_INLINE int FUNC(string_constant)(chars *s)
 
 	if (chars_check(s))
 	{
-		c = FUNC(get_char)(s);
+		c = FUNC(char_read)(s);
 		if (ALPHA_L)
 		{
 			is_set++;
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 		}
 		if (ALPHA_DOUBLE_QUOTE)
 		{
 			is_set++;
-			c = FUNC(get_next_char)(s);
+			c = FUNC(char_read_next)(s);
 			while (c)
 			{
 				if (ALPHA_DOUBLE_QUOTE)
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					break;
 				}
 				else if (ALPHA_BACKSLASH)
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 					/* escape */
 					if (ALPHA_ESCAPE)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 					}
 					else if (DIGIT_OCTAL)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 						for (i = 1; i < 3; i++)
 						{
 							if (DIGIT_OCTAL)
 							{
 								is_set++;
-								c = FUNC(get_next_char)(s);
+								c = FUNC(char_read_next)(s);
 							}
 							else
 							{
@@ -835,11 +835,11 @@ FUNCTION_INLINE int FUNC(string_constant)(chars *s)
 					else if (ALPHA_X)
 					{
 						is_set++;
-						c = FUNC(get_next_char)(s);
+						c = FUNC(char_read_next)(s);
 						while (DIGIT || ALPHA_HEX)
 						{
 							is_set++;
-							c = FUNC(get_next_char)(s);
+							c = FUNC(char_read_next)(s);
 						}
 					}
 					else
@@ -856,7 +856,7 @@ FUNCTION_INLINE int FUNC(string_constant)(chars *s)
 				else
 				{
 					is_set++;
-					c = FUNC(get_next_char)(s);
+					c = FUNC(char_read_next)(s);
 				}
 			}
 		}
@@ -865,7 +865,7 @@ FUNCTION_INLINE int FUNC(string_constant)(chars *s)
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* PARSE_H */
 

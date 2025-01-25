@@ -27,13 +27,17 @@
 
 #include "chars.h"
 
+#ifndef MODULE_NAME
 #define MODULE_NAME parse_c3
+#else
+#define MODULE_NAME_SUFFIX parse_c3
+#endif
 
 #define MODULE_STRUCT parse_c3_struct.h
 #define MODULE_INIT parse_c3_init.h
 #define MODULE_INIT_VAR parse_c3_init_var.h
 #define MODULE_FREE parse_c3_free.h
-#include "module.h"
+#include "mod.h"
 
 /* Flags */
 #define PARSE_C3_FLAG_SKIP_LWS		(1 << 2)
@@ -43,7 +47,7 @@
 #include STR(T_NAME(identifier.h))		/* parse_c3_identifier.h */
 #include STR(T_NAME(constant.h))		/* parse_c3_constant.h */
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* PARSE_C3_H */
 

@@ -19,13 +19,13 @@ FUNCTION_INLINE int FUNC(crlf)(T *p)
 	if (p)
 	{
 		s = p->s;
-		c = chars_get_char(s);
+		c = chars_char_read(s);
 		if (PARSE_C3_CR)
 		{
-			c = chars_get_next_char(s);
+			c = chars_char_read_next(s);
 			if (PARSE_C3_LF)
 			{
-				c = chars_get_next_char(s);
+				c = chars_char_read_next(s);
 				is_set = 1;
 			}
 		}
@@ -47,11 +47,11 @@ FUNCTION_INLINE int FUNC(lws)(T *p)
 		{
 		}
 
-		c = chars_get_char(s);
+		c = chars_char_read(s);
 		while (PARSE_C3_SP || PARSE_C3_HT)
 		{
 			is_set++;
-			c = chars_get_next_char(s);
+			c = chars_char_read_next(s);
 		}
 	}
 

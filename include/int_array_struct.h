@@ -1,0 +1,13 @@
+VAR_POINTER(int,a)
+VAR(size_t,size)
+VAR(size_t,n)
+VAR(size_t,base)
+VAR(size_t,rpos)
+VAR(size_t,wpos)
+VAR_POINTER_CREATE(chars,s_format)
+VAR_POINTER_CREATE(chars,s_print)
+FLAGS(
+FLAG(leading_zero)
+FLAG(padding_zero)
+FLAG(print_info)
+)

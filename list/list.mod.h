@@ -1,15 +1,3 @@
-/*
- * File:  list.mod.h
- * Description: List functions
- * Author: Askar Azhibaev
- * Date: February 2021
- * Copyright (c) 2021-2023  Askar Azhibaev
- * 
- * This file is part of C3 extension.
- * URL: https://azhibaev.com/c3.zip
- * License: CPOL http://www.codeproject.com/info/cpol10.aspx
- */
-
 #ifndef LIST_H
 #define LIST_H
 
@@ -19,194 +7,177 @@
 
 #include "common_def.h"
 
-#include "item.h"
+typedef struct list list;
+#include "list_item.h"
 
 #module list
 
 #struct
-item *p;		/* selected item */
-item *pf;		/* first item */
-item *pl;		/* last item */
-size_t count;
+list_item *begin;
+list_item *read_pos;
+list_item *end;
+list_item *parent;
+size_t size;
 
-#init ()
+#init (list_item *parent)
+p->parent = parent;
 
-#free
-item *it;
-item *next;
-it = p->pf;
-while (it)
-{
-	next = it->next;
-	item_free(it);
-	it = next;
-}
+#include "mod.h"
 
-#include "module.h"
-
-FUNCTION_INLINE item* FUNC(get)(T *p)
-{
-	if (p)
-	{
-		if (p->p)
-		{
-			return p->p;
-		}
-	}
-
-	return NULL;
-}
-
-FUNCTION_INLINE int FUNC(set)(T *p,
-		item *it)
+FUNCTION_INLINE int FUNC(add_after)(T *p,
+		list_item *pos,
+		list_item *item)
 {
 	int is_set = 0;
+	list_item *next = NULL;
 
 	if (p)
 	{
-		if (it)
+		if (pos &&
+				item)
 		{
-			if (p->pl)
+			next = pos->next;
+			pos->next = item;
+			item->prev = pos;
+			item->next = next;
+			if (next)
 			{
-				p->pl->next = it;
-				it->prev = p->pl;
-				p->pl = it;
-				is_set++;
+				next->prev = item;
 			}
-			else if (!p->pf)
-			{
-				p->pf = it;
-				p->pl = it;
-				is_set++;
-			}
-			p->p = it;
+			p->size++;
+			is_set = 1;
 		}
 	}
 
 	return is_set;
 }
 
-FUNCTION_INLINE int FUNC(reset)(T *p)
+FUNCTION_INLINE int FUNC(add_before)(T *p,
+		list_item *pos,
+		list_item *item)
 {
 	int is_set = 0;
+	list_item *prev = NULL;
 
 	if (p)
 	{
-		if (p->pf)
+		if (pos &&
+				item)
 		{
-			p->p = p->pf;
-			is_set++;
+			prev = pos->prev;
+			pos->prev = item;
+			item->next = pos;
+			item->prev = prev;
+			if (prev)
+			{
+				prev->next = item;
+			}
+			p->size++;
+			is_set = 1;
 		}
 	}
 
 	return is_set;
 }
 
-FUNCTION_INLINE int FUNC(clear)(T *p)
+FUNCTION_INLINE int FUNC(add_begin)(T *p,
+		list_item *item)
 {
 	int is_set = 0;
-	item *it = NULL;
-	item *next = NULL;
+	list_item *pos = NULL;
 
 	if (p)
 	{
-		it = p->pf;
-		while (it)
+		if (item)
 		{
-			next = it->next;
-			item_free(it);
-			it = next;
-			is_set++;
-		}
-		p->p = NULL;
-		p->pf = NULL;
-		p->pl = NULL;
-	}
-
-	return is_set;
-}
-
-FUNCTION_INLINE int FUNC(read)(T *p,
-		void *v,
-		int type)
-{
-	int is_set = 0;
-	item *it = NULL;
-
-	if (p)
-	{
-		it = item_create(1);
-		if (it)
-		{
-			if (item_init(it, v, type))
+			if (!p->begin)
 			{
-				if (FUNC(set)(p, it))
-				{
-					it = NULL;
-					is_set++;
-				}
-			}
-			if (it)
-			{
-				item_free(it);
-			}
-		}
-	}
-
-	return is_set;
-}
-
-FUNCTION_INLINE int FUNC(delete)(T *p,
-		item *it)
-{
-	int is_set = 0;
-
-	if (p)
-	{
-		if (it)
-		{
-			if (p->pl == it)
-			{
-				p->pl = it->prev;
-				if (p->pf == it)
-				{
-					p->p = NULL;
-					p->pf = NULL;
-					p->pl = NULL;
-				}
-			}
-			else if (p->pf == it)
-			{
-				p->pf = it->next;
+				p->begin = item;
+				p->end = item;
+				item->next = NULL;
+				item->prev = NULL;
+				p->size++;
+				is_set = 1;
 			}
 			else
 			{
-				if (it->next)
-				{
-					it->next->prev = it->prev;
-				}
-				if (it->prev)
-				{
-					it->prev->next = it->next;
-				}
+				pos = p->begin;
+				item->next = pos;
+				item->prev = NULL;
+				pos->prev = item;
+				p->size++;
+				is_set = 1;
 			}
-			if (p->p == it)
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(add_end)(T *p,
+		list_item *item)
+{
+	int is_set = 0;
+
+	if (p)
+	{
+		if (item)
+		{
+			if (!p->begin)
 			{
-				if (it->next)
+				if (FUNC(add_begin)(p,
+							item))
 				{
-					p->p = it->next;
-				}
-				else if (it->prev)
-				{
-					p->p = it->prev;
-				}
-				else
-				{
-					p->p = NULL;
+					is_set = 1;
 				}
 			}
-			item_free(it);
-			is_set++;
+			else if (FUNC(add_after)(p,
+						p->end,
+						item))
+			{
+				p->end = p->end->next;
+				is_set = 1;
+			}
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(add)(T *p,
+		void *s)
+{
+	int is_set = 0;
+	list_item *item = NULL;
+
+	if (p)
+	{
+		item = list_item_create_init(1,
+				s);
+		if (item)
+		{
+			is_set = FUNC(add_end)(p,
+					item);
+			if (!is_set)
+			{
+				list_item_free(item);
+			}
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(begin)(T *p)
+{
+	int is_set = 0;
+
+	if (p)
+	{
+		p->read_pos = p->begin;
+		if (p->read_pos)
+		{
+			is_set = 1;
 		}
 	}
 
@@ -219,10 +190,13 @@ FUNCTION_INLINE int FUNC(next)(T *p)
 
 	if (p)
 	{
-		if (p->p)
+		if (p->read_pos)
 		{
-			p->p = p->p->next;
-			is_set++;
+			p->read_pos = p->read_pos->next;
+			if (p->read_pos)
+			{
+				is_set = 1;
+			}
 		}
 	}
 
@@ -235,32 +209,150 @@ FUNCTION_INLINE int FUNC(prev)(T *p)
 
 	if (p)
 	{
-		if (p->p)
+		if (p->read_pos)
 		{
-			p->p = p->p->prev;
-			is_set++;
+			p->read_pos = p->read_pos->prev;
+			if (p->read_pos)
+			{
+				is_set = 1;
+			}
 		}
 	}
 
 	return is_set;
 }
 
-FUNCTION_INLINE int FUNC(free_value)(T *p,
-		int (*fn)(void*, int))
+FUNCTION_INLINE int FUNC(end)(T *p)
 {
 	int is_set = 0;
-	item *it = NULL;
 
 	if (p)
 	{
-		if (fn)
+		p->read_pos = p->end;
+		if (p->read_pos)
 		{
-			if (FUNC(reset)(p))
+			is_set = 1;
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE list_item* FUNC(get_item)(T *p)
+{
+	list_item *item = NULL;
+
+	if (p)
+	{
+		if (p->read_pos)
+		{
+			item = p->read_pos;
+		}
+	}
+
+	return item;
+}
+
+FUNCTION_INLINE list_item* FUNC(get_next_item)(T *p)
+{
+	list_item *item = NULL;
+
+	if (p)
+	{
+		if (FUNC(next)(p))
+		{
+			item = FUNC(get_item)(p);
+		}
+	}
+
+	return item;
+}
+
+FUNCTION_INLINE int FUNC(set_item)(T *p,
+		list_item *item)
+{
+	int is_set = 0;
+
+	if (p)
+	{
+		p->read_pos = item;
+		if (p->read_pos)
+		{
+			is_set = 1;
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(remove)(T *p)
+{
+	int is_set = 0;
+	list_item *next = NULL;
+	list_item *prev = NULL;
+
+	if (p)
+	{
+		if (p->read_pos)
+		{
+			next = p->read_pos->next;
+			prev = p->read_pos->prev;
+			if (next)
 			{
-				while ((it = FUNC(get)(p)))
+				next->prev = prev;
+			}
+			if (prev)
+			{
+				prev->next = next;
+			}
+			if (p->begin == p->read_pos)
+			{
+				p->begin = next;
+			}
+			if (p->end == p->read_pos)
+			{
+				p->end = prev;
+			}
+			list_item_free(p->read_pos);
+			p->read_pos = next;
+			if (p->size)
+			{
+				p->size--;
+			}
+			is_set = 1;
+		}
+	}
+
+	return is_set;
+}
+
+FUNCTION_INLINE int FUNC(remove_if)(T *p,
+		list_item_cmp cmp_eq)
+{
+	int is_set = 0;
+	list_item *i1 = NULL;
+	list_item *i2 = NULL;
+
+	if (p)
+	{
+		FUNC(begin)(p);
+		for (i1 = FUNC(get_item)(p);
+				i1;
+				FUNC(set_item)(p,
+					i1),
+				i1 = FUNC(get_next_item)(p))
+		{
+			for (i2 = FUNC(get_next_item)(p);
+					i2;
+					i2 = FUNC(get_item)(p))
+			{
+				if (cmp_eq(i1, i2))
 				{
-					is_set += fn(it->p, it->type);
-					it->p = NULL;
+					printf("remove\n");
+					FUNC(remove)(p);
+				}
+				else
+				{
 					FUNC(next)(p);
 				}
 			}
@@ -270,6 +362,6 @@ FUNCTION_INLINE int FUNC(free_value)(T *p,
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* LIST_H */

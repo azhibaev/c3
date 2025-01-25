@@ -27,7 +27,7 @@ struct T
 			flag \
 		}; \
 	};
-	#include "module_struct_def.h"
+	#include "mod_struct_def.h"
 	#undef FLAGS
 	#undef FLAG
 	#undef MODULE_STRUCT_H

@@ -27,8 +27,8 @@ int main(int argc, const char *argv[])
 	{
 		chars_print(p3->s_identifier, CHARS_FLAG_PRINT_NEWLINE);
 	}
-	chars_next_char(p3->s);
-	chars_next_char(p3->s);
+	chars_read_next(p3->s);
+	chars_read_next(p3->s);
 	if (parse_c3_string_constant(p3, PARSE_C3_FLAG_SKIP_LWS))
 	{
 		chars_print(p3->s_string_constant, CHARS_FLAG_PRINT_NEWLINE);

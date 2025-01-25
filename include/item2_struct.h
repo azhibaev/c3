@@ -1,0 +1,5 @@
+VAR_POINTER(item2,next)
+VAR_POINTER(item2,prev)
+VAR_POINTER(list2,l)
+VAR_POINTER(void,p)
+VAR(int,type)

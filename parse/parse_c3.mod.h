@@ -33,7 +33,7 @@ chars_read_pchar(p->s, s, 0, 0);
 
 #free
 
-#include "module.h"
+#include "mod.h"
 
 /* Flags */
 #define PARSE_C3_FLAG_SKIP_LWS		(1 << 2)
@@ -43,7 +43,7 @@ chars_read_pchar(p->s, s, 0, 0);
 #include STR(T_NAME(identifier.h))		/* parse_c3_identifier.h */
 #include STR(T_NAME(constant.h))		/* parse_c3_constant.h */
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* PARSE_C3_H */
 

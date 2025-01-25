@@ -13,7 +13,7 @@
 
 #init ()
 
-#include "module.h"
+#include "mod.h"
 
 FUNCTION_INLINE int FUNC(name)(T *p)
 {
@@ -26,6 +26,6 @@ FUNCTION_INLINE int FUNC(name)(T *p)
 	return is_set;
 }
 
-#include "module_undef.h"
+#include "mod_undef.h"
 
 #endif	/* MOD_H */
