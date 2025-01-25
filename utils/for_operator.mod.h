@@ -7,8 +7,6 @@
 
 #include "common_def.h"
 
-#include "mul.h"
-
 #define FOR_OPERATOR_FLAG_PRINT_NEWLINE (1 << 1)
 
 #module for_operator
